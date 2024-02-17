@@ -12,6 +12,8 @@ class EventStore: ObservableObject {
   @Published var events = [Event]()
   @Published var preview: Bool
   
+  let dateInterval = DateInterval(start: .distantPast, end: .distantFuture)
+  
   init(_ preview: Bool = false) {
     _preview = .init(wrappedValue: preview)
     fetchEvents()

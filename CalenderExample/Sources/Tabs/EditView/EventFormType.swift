@@ -9,7 +9,7 @@ import SwiftUI
 
 enum EventFormType: Identifiable, View {
   
-  case new(EventStore), update(EventStore, Event)
+  case new(ObservedObject<EventStore>), update(ObservedObject<EventStore>, Event)
   
   var id: String {
     switch self {

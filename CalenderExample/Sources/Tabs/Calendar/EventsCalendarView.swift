@@ -16,7 +16,12 @@ struct EventsCalendarView: View {
   
   var body: some View {
     NavigationStack {
-      Text("Calender")
+      List {
+        CalendarView(for: _eventStore)
+          .listRowSeparator(.hidden)
+          .navigationTitle("Calender View")
+      }
+      .listStyle(.plain)
     }
   }
 }
