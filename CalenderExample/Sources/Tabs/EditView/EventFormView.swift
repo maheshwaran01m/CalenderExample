@@ -15,8 +15,8 @@ struct EventFormView: View {
   @Environment(\.dismiss) var dismiss
   @FocusState private var focus: Bool
   
-  init(for store: EventStore) {
-    _eventStore = .init(wrappedValue: store)
+  init(for store: ObservedObject<EventStore>) {
+    _eventStore = store
     _viewModel = .init(wrappedValue: .init())
   }
   
@@ -97,8 +97,8 @@ struct EventFormView: View {
 
 extension EventFormView {
   
-  init(for store: EventStore, event: Event) {
-    _eventStore = .init(wrappedValue: store)
+  init(for store: ObservedObject<EventStore>, event: Event) {
+    _eventStore = store
     _viewModel = .init(wrappedValue: .init(event))
   }
 }
@@ -108,7 +108,7 @@ extension EventFormView {
 struct EventFormView_Previews: PreviewProvider {
   
   static var previews: some View {
-    EventFormView(for: .init(true))
+    EventFormView(for: .init(initialValue: .init(true)))
       .environmentObject(EventStore())
   }
 }

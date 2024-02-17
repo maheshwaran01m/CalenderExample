@@ -43,7 +43,7 @@ struct EventsListView: View {
       .frame(maxWidth: .infinity, alignment: .leading)
       
       Button {
-        formType = .update(eventStore, event)
+        formType = .update(_eventStore, event)
       } label: {
         Text("Edit")
       }
@@ -63,7 +63,7 @@ struct EventsListView: View {
   func addButton() -> some ToolbarContent {
     ToolbarItem(placement: .topBarTrailing) {
       Button {
-        formType = .new(eventStore)
+        formType = .new(_eventStore)
       } label: {
         Image(systemName: "plus.circle.fill")
           .imageScale(.large)
