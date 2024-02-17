@@ -12,6 +12,9 @@ class EventStore: ObservableObject {
   @Published var events = [Event]()
   @Published var preview: Bool
   
+  @Published var changedEvent: Event?
+  @Published var movedEvent: Event?
+  
   let dateInterval = DateInterval(start: .distantPast, end: .distantFuture)
   
   init(_ preview: Bool = false) {
@@ -27,21 +30,25 @@ class EventStore: ObservableObject {
   }
   
   func delete(_ event: Event) {
-    guard events.contains(where: { $0.id == event.id }) else { return }
-    events.removeAll(where: { $0.id == event.id })
+    guard events.contains(where: { $0.id == event.id }),
+          let index = events.firstIndex(of: event)  else { return }
+    changedEvent = events.remove(at: index)
   }
   
   func add(_ event: Event) {
     events.append(event)
+    changedEvent = event
   }
   
   func update(_ event: Event) {
     guard let index = events.firstIndex(where: { $0.id == event.id }) else {
       return
     }
+    movedEvent = events[index]
     events[index].date = event.date
     events[index].note = event.note
     events[index].eventType = event.eventType
+    changedEvent = event
   }
 }
 
@@ -79,6 +86,14 @@ struct Event: Identifiable, Comparable {
     self.id = id
   }
   
+  var dateComponents: DateComponents {
+    var dateComponent = Calendar.current.dateComponents(
+      [.month, .day, .year, .hour, .minute], from: date)
+    dateComponent.timeZone = .current
+    dateComponent.calendar = Calendar(identifier: .gregorian)
+    return dateComponent
+  }
+  
   static var sampleEvents: [Event] {
     [
       Event(eventType: .home, date: Date().diff(numDays: 0), note: "Take notes"),
@@ -102,5 +117,9 @@ extension Date {
   
   func diff(numDays: Int) -> Date {
     Calendar.current.date(byAdding: .day, value: numDays, to: self)!
+  }
+  
+  var startDate: Date {
+    Calendar.current.startOfDay(for: self)
   }
 }

@@ -33,12 +33,12 @@ struct EventFormView: View {
   
   var mainView: some View {
     Form {
-      DatePicker(selection: $viewModel.date) {
-        Text("Date and Time")
-      }
-      
       TextField("Note", text: $viewModel.note, axis: .vertical)
         .focused($focus, equals: true)
+      
+      DatePicker(selection: $viewModel.date) {
+        Text("Date & Time")
+      }
       
       Picker("Event type", selection: $viewModel.eventType) {
         ForEach(Event.EventType.allCases) { type in
