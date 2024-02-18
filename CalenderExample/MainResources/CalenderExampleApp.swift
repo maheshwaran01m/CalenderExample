@@ -12,9 +12,8 @@ struct CalenderExampleApp: App {
   
   var body: some Scene {
     WindowGroup {
-      NavigationStack {
-        ContentView()
-      }
+      ContentView()
+        .onAppear { print("Path: \(URL.libraryDirectory.path())") }
     }
   }
 }

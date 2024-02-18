@@ -27,17 +27,20 @@ class EventStore: ObservableObject {
       events = Event.sampleEvents
       return
     }
+    fetchData()
   }
   
   func delete(_ event: Event) {
     guard events.contains(where: { $0.id == event.id }),
           let index = events.firstIndex(of: event)  else { return }
     changedEvent = events.remove(at: index)
+    saveData()
   }
   
   func add(_ event: Event) {
     events.append(event)
     changedEvent = event
+    saveData()
   }
   
   func update(_ event: Event) {
@@ -49,14 +52,18 @@ class EventStore: ObservableObject {
     events[index].note = event.note
     events[index].eventType = event.eventType
     changedEvent = event
+    
+    saveData()
   }
+  
+  // MARK: - Stor
 }
 
 // MARK: - Event
 
 struct Event: Identifiable, Comparable {
   
-  enum EventType: String, Identifiable, CaseIterable {
+  enum EventType: String, Identifiable, CaseIterable, Codable {
     case work, home, social, sport, unspecified
     
     var id: String { rawValue }
