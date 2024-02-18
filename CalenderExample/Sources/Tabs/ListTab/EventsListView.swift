@@ -22,6 +22,7 @@ struct EventsListView: View {
         mainView(event)
       }
       .toolbar(content: addButton)
+      .sheet(item: $formType) { $0 }
       .navigationTitle("Calendar Events")
     }
   }
@@ -56,7 +57,6 @@ struct EventsListView: View {
         Image(systemName: "trash")
       }
     }
-    .sheet(item: $formType) { $0 }
   }
   
   @ToolbarContentBuilder
